@@ -1,44 +1,64 @@
 <template>
-  <base-container title="Vuex" v-if="isAuth">
-    <the-counter></the-counter>
-    <favorite-value></favorite-value>
-    <button @click="addOne">Add 10</button>
-    <change-counter></change-counter>
-  </base-container>
-  <base-container title="Auth">
-    <user-auth></user-auth>
-  </base-container>
+  <section class="container">
+    <h2>{{ userName }}</h2>
+    <h3>{{ age }}</h3>
+    <button @click="setAge">Change Age</button>
+    <div>
+      <input type="text" placeholder="First Name" @input="setFirstName" />
+      <input type="text" placeholder="Last Name" @input="setLastName" />
+    </div>
+  </section>
 </template>
 
 <script>
-import BaseContainer from './components/BaseContainer.vue';
-import TheCounter from './components/TheCounter.vue';
-import ChangeCounter from './components/ChangeCounter.vue';
-import FavoriteValue from './components/FavoriteValue.vue';
-import UserAuth from './components/UserAuth.vue';
+import { ref, computed } from 'vue';
 
 export default {
-  components: {
-    BaseContainer,
-    TheCounter,
-    ChangeCounter,
-    FavoriteValue,
-    UserAuth,
+  setup() {
+    // const uName = ref('Maximilian');
+    const firstName = ref('');
+    const lastName = ref('');
+    const uAge = ref(31);
+    // const user = reactive({
+    //   name: 'Maximilian',
+    //   age: 31,
+    // });
+
+    const uName = computed(function() {
+      return firstName.value + ' ' + lastName.value;
+    });
+
+    function setNewAge() {
+      uAge.value = 33;
+    }
+
+    function setFirstName(event) {
+      firstName.value = event.target.value;
+    }
+
+    function setLastName(event) {
+      lastName.value = event.target.value;
+    }
+
+    return {
+      userName: uName,
+      age: uAge,
+      setAge: setNewAge,
+      setFirstName,
+      setLastName,
+    };
   },
-  computed: {
-    isAuth() {
-      return this.$store.getters.userIsAuthenticated;
-    },
-  },
-  methods: {
-    addOne() {
-      // this.$store.dispatch('increase', { value: 10 });
-      this.$store.dispatch({
-        type: 'numbers/increase',
-        value: 10,
-      });
-    },
-  },
+  // data() {
+  //   return {
+  //     userName: 'Maximilian',
+  //     age: 31
+  //   };
+  // },
+  // methods: {
+  //   setNewAge() {
+  //     this.age = 32;
+  //   }
+  // }
 };
 </script>
 
@@ -53,5 +73,14 @@ html {
 
 body {
   margin: 0;
+}
+
+.container {
+  margin: 3rem auto;
+  max-width: 30rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  text-align: center;
 }
 </style>
