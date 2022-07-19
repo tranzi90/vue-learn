@@ -1,64 +1,46 @@
 <template>
-  <section class="container">
-    <h2>{{ userName }}</h2>
-    <h3>{{ age }}</h3>
-    <button @click="setAge">Change Age</button>
-    <div>
-      <input type="text" placeholder="First Name" @input="setFirstName" />
-      <input type="text" placeholder="Last Name" @input="setLastName" />
-    </div>
-  </section>
+  <the-header></the-header>
+  <router-view></router-view>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, provide } from 'vue';
+
+import TheHeader from './components/TheHeader.vue';
 
 export default {
-  setup() {
-    // const uName = ref('Maximilian');
-    const firstName = ref('');
-    const lastName = ref('');
-    const uAge = ref(31);
-    // const user = reactive({
-    //   name: 'Maximilian',
-    //   age: 31,
-    // });
-
-    const uName = computed(function() {
-      return firstName.value + ' ' + lastName.value;
-    });
-
-    function setNewAge() {
-      uAge.value = 33;
-    }
-
-    function setFirstName(event) {
-      firstName.value = event.target.value;
-    }
-
-    function setLastName(event) {
-      lastName.value = event.target.value;
-    }
-
-    return {
-      userName: uName,
-      age: uAge,
-      setAge: setNewAge,
-      setFirstName,
-      setLastName,
-    };
+  components: {
+    TheHeader,
   },
-  // data() {
-  //   return {
-  //     userName: 'Maximilian',
-  //     age: 31
-  //   };
-  // },
-  // methods: {
-  //   setNewAge() {
-  //     this.age = 32;
-  //   }
-  // }
+  setup() {
+    const products = ref([
+      {
+        id: 'p1',
+        title: 'A Carpet',
+        description: 'A nice looking, maybe a little bit used carpet.',
+        price: 15.99,
+      },
+      {
+        id: 'p2',
+        title: 'A Book',
+        description: 'You can read it. Maybe you should read it.',
+        price: 12.99,
+      },
+    ]);
+
+    function addProduct(productData) {
+      const newProduct = {
+        id: new Date().toISOString(),
+        title: productData.title,
+        description: productData.description,
+        price: productData.price,
+      };
+      products.value.push(newProduct);
+    }
+
+    provide('products', products);
+    provide('addProduct', addProduct);
+  },
 };
 </script>
 
