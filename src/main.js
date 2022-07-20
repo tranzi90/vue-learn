@@ -1,23 +1,12 @@
 import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
 
+import BaseSearch from './components/UI/BaseSearch.vue';
+import BaseContainer from './components/UI/BaseContainer.vue';
 import App from './App.vue';
-import AllProducts from './pages/AllProducts.vue';
-import ProductDetails from './pages/ProductDetails.vue';
-import AddProduct from './pages/AddProduct.vue';
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    { path: '/', redirect: '/products' },
-    { path: '/products', component: AllProducts },
-    { path: '/products/:pid', component: ProductDetails, props: true },
-    { path: '/products/add', component: AddProduct }
-  ]
-});
 
 const app = createApp(App);
 
-app.use(router);
+app.component('base-search', BaseSearch);
+app.component('base-container', BaseContainer);
 
 app.mount('#app');
